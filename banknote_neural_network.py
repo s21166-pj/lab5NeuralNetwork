@@ -67,6 +67,7 @@ cifar3_model.compile(optimizer='adam',
                      loss='sparse_categorical_crossentropy',
                      metrics=['accuracy']
                      )
+cifar3_model.fit(animals_train_data, animals_train_label, epochs=4)
 cifar3_model.fit(animals_train_data, animals_train_label, epochs=11)
 
 """
@@ -89,4 +90,21 @@ clothes_model.compile(optimizer='adam',
 clothes_model.fit(clothes_train_data, clothes_train_label, epochs=10)
 
 
-#todo custom dataset
+
+"""
+    Phoneme authentication classifying
+"""
+print("Phoneme authentication")
+phoneme_data = pd.read_csv('phoneme.csv', names=['var1', 'var2', 'var3', 'var4', 'var5', 'class'])
+phoneme_train_data = phoneme_data.copy()
+phoneme_train_label = phoneme_data.pop('class')
+phoneme_train_data = np.array(phoneme_train_data)
+
+phoneme_model = tf.keras.Sequential([tf.keras.layers.Dense(64, activation='relu'),
+                                      tf.keras.layers.Dense(1)
+                                      ])
+phoneme_model.compile(optimizer='adam',
+                       loss='mean_squared_error',
+                       metrics=['accuracy']
+                       )
+phoneme_model.fit(phoneme_train_data, phoneme_train_label, epochs=3)
