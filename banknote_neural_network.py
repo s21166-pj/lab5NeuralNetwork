@@ -68,3 +68,25 @@ cifar3_model.compile(optimizer='adam',
                      metrics=['accuracy']
                      )
 cifar3_model.fit(animals_train_data, animals_train_label, epochs=11)
+
+"""
+10 Types of Clothes classifying.
+"""
+print("\n10 Types of Clothes classifying")
+clothes_data = tf.keras.datasets.fashion_mnist
+(clothes_train_data, clothes_train_label), (clothes_test_data, clothes_test_label) = clothes_data.load_data()
+clothes_train_data = clothes_train_data / 255.0
+clothes_test_data = clothes_test_data / 255.0
+
+clothes_model = tf.keras.Sequential([tf.keras.layers.Flatten(input_shape=(28, 28)),
+                                     tf.keras.layers.Dense(128, activation='relu'),
+                                     tf.keras.layers.Dense(10, activation='softmax')
+                                     ])
+clothes_model.compile(optimizer='adam',
+                      loss='sparse_categorical_crossentropy',
+                      metrics=['accuracy']
+                      )
+clothes_model.fit(clothes_train_data, clothes_train_label, epochs=10)
+
+
+#todo custom dataset
