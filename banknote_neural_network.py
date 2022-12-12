@@ -1,3 +1,4 @@
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import tensorflow as tf
@@ -30,7 +31,7 @@ b_model.fit(b_train_data, b_train_label, epochs=7)
 """
 Bird, Cat and Deed from CIFAR10 classifying
 """
-print("\nBird, Cat and Deer from CIFAR10 classifying")
+print("\nBird, Cat and Deer from CIFAR10 classifying [5] tests")
 cifar10_data = tf.keras.datasets.cifar10
 (c_train_data, c_train_label), (c_test_data, c_test_label) = cifar10_data.load_data()
 c_train_data = c_train_data / 255
@@ -67,8 +68,46 @@ cifar3_model.compile(optimizer='adam',
                      loss='sparse_categorical_crossentropy',
                      metrics=['accuracy']
                      )
-cifar3_model.fit(animals_train_data, animals_train_label, epochs=4)
-cifar3_model.fit(animals_train_data, animals_train_label, epochs=11)
+cifar3_model.fit(animals_train_data, animals_train_label, epochs=5)
+
+print("\nBird, Cat and Deer from CIFAR10 classifying [10] tests (2nd approach)")
+cifar10_data = tf.keras.datasets.cifar10
+(c2_train_data, c2_train_label), (c2_test_data, c2_test_label) = cifar10_data.load_data()
+c2_train_data = c2_train_data / 255
+c2_test_data = c2_test_data / 255
+
+bird2_index = np.where(c2_train_label.reshape(-1) == 2)
+bird2_data = c2_train_data[bird2_index]
+bird2_label = c2_train_label[bird2_index]
+
+cat2_index = np.where(c2_train_label.reshape(-1) == 3)
+cat2_data = c2_train_data[cat_index]
+cat2_label = c2_train_label[cat_index]
+
+deer2_index = np.where(c2_train_label.reshape(-1) == 4)
+deer2_data = c2_train_data[deer2_index]
+deer2_label = c2_train_label[deer2_index]
+
+animals2_train_data = np.concatenate((bird2_data, cat2_data, deer2_data))
+animals2_train_label = np.concatenate((bird2_label, cat2_label, deer2_label)).reshape(-1, 1)
+animals2_train_label[animals2_train_label == 2] = 0
+animals2_train_label[animals2_train_label == 3] = 1
+animals2_train_label[animals2_train_label == 4] = 2
+
+cifar32_model = tf.keras.models.Sequential(
+    [tf.keras.layers.Conv2D(filters=32, kernel_size=(3, 3), activation='relu', input_shape=(32, 32, 3)),
+     tf.keras.layers.MaxPooling2D((2, 2)),
+     tf.keras.layers.Conv2D(filters=64, kernel_size=(3, 3), activation='relu'),
+     tf.keras.layers.MaxPooling2D((2, 2)),
+     tf.keras.layers.Flatten(),
+     tf.keras.layers.Dense(64, activation='relu'),
+     tf.keras.layers.Dense(3, activation='softmax')
+     ])
+cifar32_model.compile(optimizer='adam',
+                     loss='sparse_categorical_crossentropy',
+                     metrics=['accuracy']
+                     )
+cifar32_model.fit(animals_train_data, animals_train_label, epochs=10)
 
 """
 10 Types of Clothes classifying.
